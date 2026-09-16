@@ -9,9 +9,6 @@ img {
 
 body {
   overflow-x: hidden;
-}
-
-body {
   font-family: Arial, sans-serif;
   margin: 0;
   background-color: #6B8E23; /* Olive Drab Green */
@@ -20,10 +17,12 @@ body {
 
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #3B3B3B;
   color: #F5F5DC;
   padding: 20px;
-  text-align: center;   /* centers everything inside */
 }
 
 
@@ -88,12 +87,6 @@ footer {
   transform: scale(1.03);
 }
 
-@media (max-width: 768px) {
-  .gallery-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
 .logo {
   height: 120px;   /* increase size */
   display: block;  /* allows centering */
@@ -101,15 +94,22 @@ footer {
 }
 
 @media (max-width: 768px) {
-
   header {
     flex-direction: column;
-    text-alighn: center;
+    gap: 15px;
+    text-align: center;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   nav a {
+    margin: 5px 0;
+    padding: 10px;
     display: block;
-    margin: 10px 0;
   }
 
   .hero {
@@ -121,6 +121,6 @@ footer {
   }
 
   main {
-    padding: 10px
+    padding: 10px;
   }
 }
