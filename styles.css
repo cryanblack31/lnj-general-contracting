@@ -7,13 +7,21 @@ img {
   height: auto;
 }
 
+/* Fixes footer position on short pages */
+html, body {
+  height: 100%;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   font-family: Arial, sans-serif;
   margin: 0;
   background-color: #6B8E23; /* Olive Drab Green */
   color: #333;
   line-height: 1.6;
+  font-size: 16px;
 }
 
 /* Header - Centered Layout for All Devices */
@@ -83,8 +91,10 @@ nav a {
   background-color: #D97A1B; /* Safety Orange */
 }
 
+/* Flex-grow forces main content to push footer down */
 main {
   padding: 20px;
+  flex: 1 0 auto;
 }
 
 .services-list li {
@@ -121,35 +131,39 @@ footer {
 
 /* Mobile Enhancements (Phones & Tablets) */
 @media (max-width: 768px) {
-  /* Increase site-wide font size for mobile readability */
+  /* Enforces larger legible mobile fonts */
+  html {
+    font-size: 18px;
+  }
+
   body {
-    font-size: 19px;
+    font-size: 1.1rem;
   }
 
   h1 {
-    font-size: 1.8rem;
+    font-size: 2rem !important;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem !important;
   }
 
   p, li {
-    font-size: 1.1rem;
+    font-size: 1.15rem !important;
   }
 
   /* Vertical touch-friendly menu buttons */
   nav {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
 
   nav a {
     display: block;
-    padding: 12px;
-    background-color: rgba(255, 255, 255, 0.1);
+    padding: 14px;
+    background-color: rgba(255, 255, 255, 0.12);
     border-radius: 6px;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 
   .hero {
@@ -159,7 +173,7 @@ footer {
   .cta {
     width: 100%;
     display: block;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     padding: 16px;
   }
 
