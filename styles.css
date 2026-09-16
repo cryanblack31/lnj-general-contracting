@@ -2,7 +2,6 @@
   box-sizing: border-box;
 }
 
-
 img {
   max-width: 100%;
   height: auto;
@@ -14,8 +13,10 @@ body {
   margin: 0;
   background-color: #6B8E23; /* Olive Drab Green */
   color: #333;
+  line-height: 1.6;
 }
 
+/* Header & Desktop Layout */
 header {
   display: flex;
   justify-content: space-between;
@@ -23,7 +24,6 @@ header {
   background-color: #3B3B3B;
   color: #F5F5DC;
   padding: 20px;
-  flex-wrap: wrap; /* Allows nav to drop cleanly below branding on smaller screens */
 }
 
 .brand {
@@ -37,25 +37,33 @@ header {
   width: auto;
   display: block;
 }
+
 nav a {
-  color: white;
-  margin-right: 15px;
+  color: #F5F5DC;
+  margin-left: 15px;
   text-decoration: none;
   font-weight: bold;
+  font-size: 1rem;
 }
 
 .hero {
-  padding: 60px;
+  padding: 60px 20px;
   text-align: center;
   background: #e0e0e0;
 }
 
+.hero h1, .hero h2 {
+  margin-top: 0;
+}
+
 .cta {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: #C9A635;
   color: #1F1F1F;
   text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
   margin-top: 20px;
 }
 
@@ -68,14 +76,15 @@ main {
 }
 
 .services-list li {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
 }
 
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 15px;
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .gallery-grid img {
@@ -94,38 +103,63 @@ footer {
   background-color: #3B3B3B; /* Dark Charcoal */
   color: #F5F5DC; /* Light Cream Text */
   text-align: center;
-  padding: 15px;
+  padding: 20px;
   margin-top: 40px;
 }
 
-/* Mobile Responsiveness */
+/* Automatic Mobile Enhancements (Phones & Tablets) */
 @media (max-width: 768px) {
+  /* Stack Header Elements (Logo, Title, Nav under each other) */
   header {
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 25px 15px;
     gap: 15px;
   }
 
   .brand {
-    justify-content: center;
-    text-align: center;
+    flex-direction: column; /* Stacks logo above the title */
+    align-items: center;
+    gap: 10px;
   }
 
+  .logo {
+    max-height: 90px;
+  }
+
+  /* Enhances Navigation links on mobile */
   nav {
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-top: 10px;
   }
 
   nav a {
-    margin: 4px 0;
-    padding: 10px;
-    text-align: center;
     display: block;
+    margin: 5px 0;
+    padding: 12px;
+    background-color: rgba(255, 255, 255, 0.08); /* Soft button background */
+    border-radius: 5px;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  /* Enhances typography & readability */
+  body {
+    font-size: 18px; /* Larger base size for phone screens */
   }
 
   .hero {
-    padding: 30px;
+    padding: 35px 15px;
+  }
+
+  .cta {
+    width: 100%; /* Spans full width for easy tapping */
+    display: block;
+    font-size: 1.1rem;
+    padding: 14px;
   }
 
   .gallery-grid {
@@ -133,6 +167,9 @@ footer {
   }
 
   main {
+    padding: 15px;
+  }
+}
     padding: 10px;
   }
 }
