@@ -129,6 +129,47 @@ footer {
   margin-top: 40px;
 }
 
+/* Center alignment for contact page only */
+.contact-container {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.contact-container .form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.contact-container input,
+.contact-container textarea {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contact-container textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
 /* Mobile Enhancements (Phones & Tablets) */
 @media (max-width: 768px) {
   /* Enforces larger legible mobile fonts */
