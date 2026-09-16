@@ -16,34 +16,46 @@ body {
   line-height: 1.6;
 }
 
-/* Header & Desktop Layout */
+/* Header - Centered Layout for All Devices */
 header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   background-color: #3B3B3B;
   color: #F5F5DC;
-  padding: 20px;
+  padding: 25px 20px;
+  gap: 15px;
 }
 
 .brand {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .logo {
-  max-height: 80px;
+  max-height: 100px;
   width: auto;
   display: block;
 }
 
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  width: 100%;
+  margin-top: 10px;
+}
+
 nav a {
   color: #F5F5DC;
-  margin-left: 15px;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .hero {
@@ -107,48 +119,37 @@ footer {
   margin-top: 40px;
 }
 
-/* Automatic Mobile Enhancements (Phones & Tablets) */
+/* Mobile Enhancements (Phones & Tablets) */
 @media (max-width: 768px) {
-  /* Stack Header Elements (Logo, Title, Nav under each other) */
-  header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 25px 15px;
-    gap: 15px;
+  /* Increase site-wide font size for mobile readability */
+  body {
+    font-size: 19px;
   }
 
-  .brand {
-    flex-direction: column; /* Stacks logo above the title */
-    align-items: center;
-    gap: 10px;
+  h1 {
+    font-size: 1.8rem;
   }
 
-  .logo {
-    max-height: 90px;
+  h2 {
+    font-size: 1.5rem;
   }
 
-  /* Enhances Navigation links on mobile */
+  p, li {
+    font-size: 1.1rem;
+  }
+
+  /* Vertical touch-friendly menu buttons */
   nav {
-    display: flex;
     flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
+    gap: 8px;
   }
 
   nav a {
     display: block;
-    margin: 5px 0;
     padding: 12px;
-    background-color: rgba(255, 255, 255, 0.08); /* Soft button background */
-    border-radius: 5px;
-    font-size: 1.1rem;
-    text-align: center;
-  }
-
-  /* Enhances typography & readability */
-  body {
-    font-size: 18px; /* Larger base size for phone screens */
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 1.2rem;
   }
 
   .hero {
@@ -156,10 +157,10 @@ footer {
   }
 
   .cta {
-    width: 100%; /* Spans full width for easy tapping */
+    width: 100%;
     display: block;
-    font-size: 1.1rem;
-    padding: 14px;
+    font-size: 1.2rem;
+    padding: 16px;
   }
 
   .gallery-grid {
@@ -168,8 +169,5 @@ footer {
 
   main {
     padding: 15px;
-  }
-}
-    padding: 10px;
   }
 }
