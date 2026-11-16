@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const PORT = 3000;
@@ -27,8 +28,16 @@ app.get("/api/images", (req, res) => {
   });
 });
 
+// configure email transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_USER,      // your email address
+    pass: process.env.MAIL_PASSWORD,  // your app password or SMTP password
+  },
+});
 // NEW: contact form endpoint
-app.post("/contact", (req, res) => {
+app.post("/contact", async (req, res) => {
   const { name, email, message } = req.body;
 
   console.log("New contact form submission:");
@@ -37,8 +46,21 @@ app.post("/contact", (req, res) => {
   console.log("Message:", message);
   console.log("-".repeat(40));
 
-  // later: send email here
-  res.json({ status: "ok" });
+  const mailOptions = {
+    from: process.env.MAIL_USER,
+    to: "lnjgeneralcontracting@gmail.com", // where you want to receive leads
+    subject: `New contact from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully");
+    res.json({ status: "ok" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ status: "error", message: "Failed to send email" });
+  }
 });
 
 app.listen(PORT, () => {
