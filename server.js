@@ -6,6 +6,16 @@ const nodemailer = require("nodemailer");
 const app = express();
 const PORT = 3000;
 
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  secure: false, // use TLS
+  auth: {
+    user: process.env.MAIL_USER,     // your Brevo SMTP login
+    pass: process.env.MAIL_PASSWORD, // your Brevo SMTP key
+  },
+});
+
 // parse form data (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
 // parse JSON if you ever use it
@@ -28,14 +38,6 @@ app.get("/api/images", (req, res) => {
   });
 });
 
-// configure email transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MAIL_USER,      // your email address
-    pass: process.env.MAIL_PASSWORD,  // your app password or SMTP password
-  },
-});
 // NEW: contact form endpoint
 app.post("/contact", async (req, res) => {
   const { name, email, message } = req.body;
