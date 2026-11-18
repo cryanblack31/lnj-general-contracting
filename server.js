@@ -4,67 +4,73 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false, // use TLS
-  auth: {
-    user: process.env.MAIL_USER,     // your Brevo SMTP login
-    pass: process.env.MAIL_PASSWORD, // your Brevo SMTP key
-  },
-});
-
-// parse form data (application/x-www-form-urlencoded)
-app.use(express.urlencoded({ extended: true }));
-// parse JSON if you ever use it
-app.use(express.json());
-
-// serve static files (html, css, js, images)
+// FormData is sent as URL-encoded data by contact.html.
+app.use(express.urlencoded({ extended: false, limit: "10kb" }));
+app.use(express.json({ limit: "10kb" }));
 app.use(express.static(__dirname));
 
 app.get("/api/images", (req, res) => {
   const imgDir = path.join(__dirname, "images");
 
   fs.readdir(imgDir, (err, files) => {
-    if (err) return res.status(500).json({ error: "Unable to scan folder" });
+    if (err) {
+      console.error("Unable to read images folder:", err);
+      return res.status(500).json({ error: "Unable to load images." });
+    }
 
-    const images = files.filter(file =>
-      file.match(/\.(jpg|jpeg|png|gif|webp)$/i)
-    );
-
+    const images = files.filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
     res.json(images);
   });
 });
 
-// NEW: contact form endpoint
 app.post("/contact", async (req, res) => {
-  const { name, email, message } = req.body;
+  const name = typeof req.body?.name === "string" ? req.body.name.trim() : "";
+  const email = typeof req.body?.email === "string" ? req.body.email.trim() : "";
+  const message = typeof req.body?.message === "string" ? req.body.message.trim() : "";
 
-  console.log("New contact form submission:");
-  console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Message:", message);
-  console.log("-".repeat(40));
+  if (!name || !email || !message) {
+    return res.status(400).json({ status: "error", message: "Please complete every field." });
+  }
 
-  const mailOptions = {
-    from: process.env.MAIL_USER,
-    to: "lnjgeneralcontracting@gmail.com", // where you want to receive leads
-    subject: `New contact from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-  };
+  if (name.length > 100 || email.length > 254 || message.length > 5000) {
+    return res.status(400).json({ status: "error", message: "One or more fields are too long." });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ status: "error", message: "Please enter a valid email address." });
+  }
+
+  const { MAIL_USER, MAIL_PASSWORD, MAIL_FROM } = process.env;
+  if (!MAIL_USER || !MAIL_PASSWORD || !MAIL_FROM) {
+    console.error("Email configuration is incomplete. Set MAIL_USER, MAIL_PASSWORD, and MAIL_FROM.");
+    return res.status(503).json({ status: "error", message: "Email is not configured yet." });
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: { user: MAIL_USER, pass: MAIL_PASSWORD },
+  });
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
-    res.json({ status: "ok" });
+    await transporter.sendMail({
+      from: MAIL_FROM, // Must be a sender address verified in Brevo.
+      to: "lnjgeneralcontracting@gmail.com",
+      replyTo: email,
+      subject: "New website contact form message",
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+    });
+
+    return res.json({ status: "ok" });
   } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).json({ status: "error", message: "Failed to send email" });
+    console.error("Error sending contact email:", error.message);
+    return res.status(500).json({ status: "error", message: "Failed to send email. Please try again later." });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
