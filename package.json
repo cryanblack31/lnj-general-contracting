@@ -6,7 +6,23 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
-  }
+    "express": "^4.18.2",
+    "nodemailer": "^10.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryanblack31/lnj-general-contracting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cryanblack31/lnj-general-contracting/issues"
+  },
+  "homepage": "https://github.com/cryanblack31/lnj-general-contracting#readme"
 }
-
