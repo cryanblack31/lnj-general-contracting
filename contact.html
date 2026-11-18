@@ -53,7 +53,7 @@
   const form = document.getElementById("contact-form");
 
   form.addEventListener("submit", async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // stop normal form submit
 
     const formData = new FormData(form);
 
@@ -75,5 +75,6 @@
     }
   });
 </script>
+
 </body>
 </html>
