@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — L&J General Contracting</title>
+  <title>Contact — L&amp;J General Contracting</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <img src="images/logo.png" alt="L&J General Contracting Logo" class="logo">
-  <h1>L&J General Contracting</h1>
+  <img src="images/logo.png" alt="L&amp;J General Contracting Logo" class="logo">
+  <h1>L&amp;J General Contracting</h1>
   <nav>
     <a href="index.html">Home</a>
     <a href="services.html">Services</a>
@@ -20,65 +20,70 @@
   </nav>
 </header>
 
-
 <main class="contact-container">
   <h2>Contact Us</h2>
   <p><strong>Phone:</strong> (256)-477-1477</p>
   <p><strong>Email:</strong> lnjgeneralcontracting@gmail.com</p>
   <p><strong>Service Area:</strong> Marshall County, Alabama</p>
 
-  <form id="contact-form" action="http://localhost:3000/contact" method="POST">
+  <form id="contact-form" action="/contact" method="POST">
     <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" id="name" name="name" required>
+      <input type="text" id="name" name="name" maxlength="100" autocomplete="name" required>
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
+      <input type="email" id="email" name="email" maxlength="254" autocomplete="email" required>
     </div>
     <div class="form-group">
       <label for="message">Message</label>
-      <textarea id="message" id="message" name="message" required></textarea>
+      <textarea id="message" name="message" maxlength="5000" required></textarea>
     </div>
     <button type="submit" class="cta">Send Message</button>
+    <p id="form-status" role="status" aria-live="polite"></p>
   </form>
 </main>
 
 <footer>
-  <p>© 2026 L&J General Contracting — Marshall County, Alabama</p>
+  <p>© 2026 L&amp;J General Contracting — Marshall County, Alabama</p>
   <p>Quality Work. Honest Service.</p>
 </footer>
 
 <script>
   const form = document.getElementById("contact-form");
+  const status = document.getElementById("form-status");
+  const submitButton = form.querySelector('button[type="submit"]');
 
-form.addEventListener("submit", async (event) => {
-  event.preventEvent?.(); // no: use event.preventDefault()
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    status.textContent = "Sending your message…";
+    submitButton.disabled = true;
 
-  event.preventDefault();
+    try {
+      // Express parses URL-encoded bodies without an additional multipart package.
+      const body = new URLSearchParams(new FormData(form));
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body,
+      });
+      const result = await response.json();
 
-  const formData = new FormData(form);
+      if (!response.ok) {
+        throw new Error(result.message || "Unable to send your message.");
+      }
 
-  try {
-    const response = await fetch("/contact", {
-      method: "POST",
-      body: formData,
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message || "Unable to send message");
+      form.reset();
+      status.textContent = "Your message has been sent. Thank you!";
+    } catch (error) {
+      console.error("Contact form error:", error);
+      status.textContent = error.message || "There was a problem sending your message. Please try again.";
+    } finally {
+      submitButton.disabled = false;
     }
-
-    form.reset();
-    alert("Your message has been sent. Thank you!");
-  } catch (error) {
-    console.error("Error:", error);
-    alert("There was a problem sending your message. Please try again.");
-  }
-});
+  });
 </script>
 
 </body>
 </html>
+
